@@ -1,0 +1,140 @@
+-- ## SQL Names
+
+-- Save a script containing the query you used to answer each question.
+
+-- 1. How many rows are in the names table? 1,957,046 rows
+SELECT COUNT(*)
+FROM names;
+
+
+-- 2. How many total registered people appear in the dataset? (ANSWER: 351,653,025 total registered people)
+SELECT sum(num_registered)
+FROM names;
+
+
+-- 3. Which name had the most appearances in a single year in the dataset? (ANSWER: The most appearances was Linda in 1947 with 99,689)
+SELECT *
+FROM names
+ORDER BY num_registered DESC
+LIMIT 1;
+
+
+-- 4. What range of years are included? (ANSWER: 1880 to 2018)
+SELECT min(year), max(year)
+FROM names;
+
+
+-- 5. What year has the largest number of registrations? (ANSWER: 1957 has the largest number of registrations at 4,200,022)
+SELECT sum(num_registered) AS total, year
+FROM names
+GROUP BY year
+ORDER BY total DESC
+LIMIT 1;
+
+
+-- 6. How many different (distinct) names are contained in the dataset? (ANSWER: There are 98,400 distinct names)
+SELECT DISTINCT name
+FROM names;
+
+
+-- 7. Are there more males or more females registered? (ANSWER: There are more males registered (177,573,793) than females (174,079,232))
+SELECT gender, SUM(num_registered)
+FROM names
+GROUP BY gender;
+
+
+-- 8. What are the most popular male and female names overall (i.e., the most total registrations)? (ANSWER: Female=Mary(4,125,675); Male=James(5,164,280))
+SELECT name, SUM(num_registered) AS total
+FROM names
+WHERE gender='F'
+GROUP BY name
+ORDER BY total DESC
+LIMIT 1;
+
+SELECT name, SUM(num_registered) AS total
+FROM names
+WHERE gender='M'
+GROUP BY name
+ORDER BY total DESC
+LIMIT 1;
+
+
+-- 9. What are the most popular boy and girl names of the first decade of the 2000s (2000 - 2009)? (ANSWER: Female=Emily(223,690); Male=Jacob(273,844))
+SELECT name, SUM(num_registered) AS total
+FROM names
+WHERE year BETWEEN 2000 AND 2009
+AND gender='F'
+GROUP BY name
+ORDER BY total DESC
+LIMIT 1;
+
+SELECT name, SUM(num_registered) AS total
+FROM names
+WHERE year BETWEEN 2000 AND 2009
+AND gender='M'
+GROUP BY name
+ORDER BY total DESC
+LIMIT 1;
+
+
+-- 10. Which year had the most variety in names (i.e. had the most distinct names)? (ANSWER: 2008 had the most distinct names with 32,518)
+SELECT year, COUNT(DISTINCT name) AS total
+FROM names
+GROUP BY year
+ORDER BY total DESC
+LIMIT 1;
+
+
+-- 11. What is the most popular name for a girl that starts with the letter X? (ANSWER: Ximena is the most popular girl name that starts with 'X' with 26,145)
+SELECT name, SUM(num_registered) as total
+FROM names
+WHERE gender='F'
+AND name LIKE 'X%'
+GROUP BY name
+ORDER BY total DESC
+LIMIT 1;
+
+
+-- 12. Write a query to find all (distinct) names that start with a 'Q' but whose second letter is not 'u'. (ANSWER: 46 results)
+SELECT DISTINCT name
+FROM names
+WHERE name LIKE 'Q%'
+AND name NOT LIKE '_u%';
+
+
+-- 13. Which is the more popular spelling between "Stephen" and "Steven"? Use a single query to answer this question. (ANSWER: Steven=1,286,951 : Stephen=860,972)
+SELECT name, SUM(num_registered)
+FROM names
+WHERE name = 'Stephen'
+OR name = 'Steven'
+GROUP BY name;
+
+
+-- 14. Find all names that are "unisex" - that is all names that have been used both for boys and for girls. (ANSWER: 10,773 unixex names)
+SELECT name
+FROM names
+GROUP BY name
+HAVING COUNT(DISTINCT gender) > 1;
+
+
+-- 15. Find all names that have made an appearance in every single year since 1880. (ANSWER: 921 rows)
+SELECT name
+FROM names
+GROUP BY name
+HAVING COUNT(DISTINCT year) > 2018 - 1880;
+
+
+-- 16. Find all names that have only appeared in one year. (ANSWER: 21,123 rows)
+SELECT name
+FROM names
+GROUP BY name
+HAVING COUNT(DISTINCT year) = 1;
+
+
+-- 17. Find all names that only appeared in the 1950s.
+
+-- 18. Find all names that made their first appearance in the 2010s.
+
+-- 19. Find the names that have not be used in the longest.
+
+-- 20. Come up with a question that you would like to answer using this dataset. Then write a query to answer this question.
